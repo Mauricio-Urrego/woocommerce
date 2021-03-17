@@ -36,13 +36,6 @@ class ProductAttributes extends BaseQueryListType
 		$rows = $wpdb->get_results($sql, ARRAY_A);
 
 		return array_map(function($row) {
-			/*$attribute->id           = (int) $data->attribute_id;
-			$attribute->name         = $data->attribute_label;
-			$attribute->slug         = wc_attribute_taxonomy_name( $data->attribute_name );
-			$attribute->type         = $data->attribute_type;
-			$attribute->order_by     = $data->attribute_orderby;
-			$attribute->has_archives = (bool) $data->attribute_public;*/
-
 			return [
 				'id' => $row['attribute_id'],
 				'name' => $row['attribute_label'],

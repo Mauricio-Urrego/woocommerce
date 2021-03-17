@@ -33,7 +33,7 @@ class Main
 		self::$container = wc_get_container();
 
 		add_action( 'rest_api_init', function () {
-			register_rest_route( 'wc/v4', 'api', array(
+			register_rest_route( 'wc/graphql', 'api', array(
 				'methods' => 'POST',
 				'callback' => function($request) {
 					return call_user_func(self::class . '::handle_request', $request);
