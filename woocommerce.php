@@ -60,3 +60,7 @@ function wc_get_container() : \Psr\Container\ContainerInterface {
 
 // Global for backwards compatibility.
 $GLOBALS['woocommerce'] = WC();
+
+Automattic\WooCommerce\Internal\RestApi\v4\Main::init();
+
+//add_filter('woocommerce_rest_check_permissions', function() {return true;}, 10, 0 );
