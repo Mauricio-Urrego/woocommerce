@@ -4,11 +4,11 @@
 namespace Automattic\WooCommerce\Internal\RestApi\v4\QueryTypes;
 
 use Automattic\WooCommerce\Internal\RestApi\v4\ApiException;
-use Automattic\WooCommerce\Internal\RestApi\v4\BaseObjectType;
+use Automattic\WooCommerce\Internal\RestApi\v4\BaseQueryType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
-class ProductAttributeTerm extends BaseObjectType
+class ProductAttributeTerm extends BaseQueryType
 {
 	public function get_description()
 	{

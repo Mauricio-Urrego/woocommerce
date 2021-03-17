@@ -4,10 +4,10 @@
 namespace Automattic\WooCommerce\Internal\RestApi\v4\QueryTypes;
 
 use Automattic\WooCommerce\Internal\RestApi\v4\ApiException;
-use Automattic\WooCommerce\Internal\RestApi\v4\BaseObjectListType;
+use Automattic\WooCommerce\Internal\RestApi\v4\BaseQueryListType;
 use GraphQL\Type\Definition\Type;
 
-class ProductAttributeTerms extends BaseObjectListType
+class ProductAttributeTerms extends BaseQueryListType
 {
 	public function get_object_class_name()
 	{

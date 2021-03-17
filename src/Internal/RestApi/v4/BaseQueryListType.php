@@ -7,7 +7,7 @@ namespace Automattic\WooCommerce\Internal\RestApi\v4;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 
-abstract class BaseObjectListType extends BaseObjectType
+abstract class BaseQueryListType extends BaseQueryType
 {
 	const MAX_RESULTS_PER_QUERY = 100;
 
@@ -24,8 +24,7 @@ abstract class BaseObjectListType extends BaseObjectType
 	public function get_description()
 	{
 		$object_name = $this->container->get($this->get_object_class_name())->get_name();
-		$object_name_parts = explode('\\', $object_name);
-		return "A collection of ". array_pop($object_name_parts) . '.';
+		return "A collection of ". $object_name . '.';
 	}
 
 	public function get_fields()

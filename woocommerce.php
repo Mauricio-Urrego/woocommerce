@@ -63,4 +63,8 @@ $GLOBALS['woocommerce'] = WC();
 
 Automattic\WooCommerce\Internal\RestApi\v4\Main::init();
 
+add_filter('woocommerce_graphql_check_permissions', function($user_has_permission, $field_name, $required_permission, $request_args) {
+	return true;
+},10,4);
+
 //add_filter('woocommerce_rest_check_permissions', function() {return true;}, 10, 0 );

@@ -4,10 +4,10 @@
 namespace Automattic\WooCommerce\Internal\RestApi\v4\QueryTypes;
 
 
-use Automattic\WooCommerce\Internal\RestApi\v4\BaseObjectListType;
+use Automattic\WooCommerce\Internal\RestApi\v4\BaseQueryListType;
 use GraphQL\Type\Definition\ResolveInfo;
 
-class ProductAttributes extends BaseObjectListType
+class ProductAttributes extends BaseQueryListType
 {
 	private $attribute_taxonomies;
 

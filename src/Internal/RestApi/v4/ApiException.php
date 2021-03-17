@@ -23,4 +23,8 @@ class ApiException extends \Exception implements ClientAware
 	{
 		return $this->category;
 	}
+
+	public static function Unauthorized($message = null) {
+		return new ApiException(is_null($message) ? "You don't have permission for the requested operation" : $message, 'authorization');
+	}
 }

@@ -7,6 +7,8 @@ namespace Automattic\WooCommerce\Internal\DependencyManagement\ServiceProviders;
 
 use Automattic\WooCommerce\Internal\DependencyManagement\AbstractServiceProvider;
 use Automattic\WooCommerce\Internal\RestApi\v4\EnumTypes\ProductAttributeOrderBy;
+use Automattic\WooCommerce\Internal\RestApi\v4\InputTypes\AddProductAttributeTermInputType;
+use Automattic\WooCommerce\Internal\RestApi\v4\MutationTypes\AddProductAttributeTerm;
 use Automattic\WooCommerce\Internal\RestApi\v4\QueryTypes\ProductAttribute;
 use Automattic\WooCommerce\Internal\RestApi\v4\QueryTypes\ProductAttributes;
 use Automattic\WooCommerce\Internal\RestApi\v4\QueryTypes\ProductAttributeTerm;
@@ -28,7 +30,9 @@ class GraphqlTypesServiceProvider extends AbstractServiceProvider {
 		ProductAttributes::class,
 		ProductAttributeOrderBy::class,
 		ProductAttributeTerm::class,
-		ProductAttributeTerms::class
+		ProductAttributeTerms::class,
+		AddProductAttributeTerm::class,
+		AddProductAttributeTermInputType::class
 	);
 
 	/**
@@ -36,11 +40,7 @@ class GraphqlTypesServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register() {
 		foreach($this->provides as $class_name) {
-			$this->share($class_name)->addArgument(\Psr\Container\ContainerInterface::class);
-			/*$instance = $this->get($class_name);
-			$exploded = explode('\\', $class_name);
-			$class_name_without_namespace = array_pop($exploded);
-			$this->share($class_name_without_namespace, $instance);*/
+			$this->share($class_name);
 		}
 	}
 }

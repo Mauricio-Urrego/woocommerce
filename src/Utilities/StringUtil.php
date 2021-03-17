@@ -57,4 +57,9 @@ final class StringUtil {
 
 		return strcasecmp( $string, $ends_with ) === 0;
 	}
+
+	public static function class_name_without_namespace( string $full_class_name ) {
+		$class_name_parts = explode('\\', $full_class_name );
+		return array_pop($class_name_parts );
+	}
 }

@@ -7,7 +7,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
 
-abstract class BaseObjectType extends ObjectType
+abstract class BaseQueryType extends ObjectType
 {
 	protected $container;
 

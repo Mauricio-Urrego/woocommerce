@@ -12,6 +12,8 @@ abstract class BaseEnumType extends EnumType
 
 	public function __construct()
 	{
+		$this->container = wc_get_container();
+
 		$config = [
 			'name' => $this->get_name(),
 			'description' => $this->get_description(),
@@ -19,10 +21,6 @@ abstract class BaseEnumType extends EnumType
 		];
 
 		parent::__construct($config);
-	}
-
-	public final function init(\Psr\Container\ContainerInterface $container) {
-		$this->container = $container;
 	}
 
 	public function get_name() {

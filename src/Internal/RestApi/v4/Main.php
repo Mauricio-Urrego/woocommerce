@@ -2,6 +2,7 @@
 
 namespace Automattic\WooCommerce\Internal\RestApi\v4;
 
+use GraphQL\Error\Error;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\GraphQL;
@@ -19,7 +20,14 @@ class Main
 {
 	private static $container;
 
-	private static $subnamespaces = ['EnumTypes', 'QueryTypes'];
+	private static $subnamespaces = ['EnumTypes', 'QueryTypes', 'MutationTypes', 'InputTypes'];
+
+	private static $status_codes_by_error_category = [
+		'request' => 400,
+		'graphql' => 400,
+		'authorization' => 401,
+		'internal' => 500
+	];
 
 	public static function init() {
 		self::$container = wc_get_container();
@@ -29,7 +37,8 @@ class Main
 				'methods' => 'POST',
 				'callback' => function($request) {
 					return call_user_func(self::class . '::handle_request', $request);
-				}
+				},
+				'permission_callback' => '__return_true'
 			) );
 		} );
 	}
@@ -45,6 +54,8 @@ class Main
 	}
 
 	private static function handle_request(\WP_REST_Request $request) {
+		$error_category = null;
+
 		try {
 			$input = json_decode($request->get_body(), true);
 			if(is_null($input)) {
@@ -59,22 +70,27 @@ class Main
 
 			$schema = new Schema([
 				'query' => self::$container->get(RootQueryType::class),
+				'mutation' => self::$container->get(RootMutationType::class),
 				'typeLoader' => function($name) {
 					return self::resolve_type($name);
 				}
 			]);
 
 			$result = GraphQL::executeQuery($schema, $query, null, null, $variableValues);
+			if(!empty($result->errors)) {
+				$error_category = current($result->errors)->getCategory();
+			}
+
 			$output = $result->toArray(self::get_debug_config());
 		} catch (\Exception $e) {
-			$category = $e instanceof ClientAware ? $e->getCategory() : 'internal';
+			$error_category = $e instanceof ClientAware ? $e->getCategory() : 'internal';
 
 			if(self::get_debug_config()) {
 				$output = [
 					'errors' => [
 						[
 							'message' => $e->getMessage(),
-							'category' => $category,
+							'category' => $error_category,
 							'trace' => $e->getTrace()
 						]
 					]
@@ -85,14 +101,18 @@ class Main
 					'errors' => [
 						[
 							'message' => 'Internal server error',
-							'category' => $category
+							'category' => $error_category
 						]
 					]
 				];
 			}
 		}
 
-		return $output;
+		if($error_category) {
+			return new \WP_REST_Response($output, self::$status_codes_by_error_category[$error_category]);
+		} else {
+			return $output;
+		}
 	}
 
 	private static function get_debug_config() {
